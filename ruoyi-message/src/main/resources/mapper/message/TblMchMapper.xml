@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.message.mapper.TblMchMapper">
+    
+    <resultMap type="TblMch" id="TblMchResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="available"    column="available"    />
+        <result property="description"    column="description"    />
+        <result property="apiSecret"    column="api_secret"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createById"    column="create_by_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateById"    column="update_by_id"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTblMchVo">
+        select id, name, available, description, api_secret, create_by, create_by_id, create_time, update_by, update_by_id, update_time from tbl_mch
+    </sql>
+
+    <select id="selectTblMchList" parameterType="TblMch" resultMap="TblMchResult">
+        <include refid="selectTblMchVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="available != null "> and available = #{available}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="apiSecret != null  and apiSecret != ''"> and api_secret = #{apiSecret}</if>
+            <if test="createById != null  and createById != ''"> and create_by_id = #{createById}</if>
+            <if test="updateById != null  and updateById != ''"> and update_by_id = #{updateById}</if>
+        </where>
+    </select>
+    
+    <select id="selectTblMchById" parameterType="Long" resultMap="TblMchResult">
+        <include refid="selectTblMchVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTblMch" parameterType="TblMch" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_mch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="available != null">available,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="apiSecret != null">api_secret,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createById != null and createById != ''">create_by_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateById != null and updateById != ''">update_by_id,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="available != null">#{available},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="apiSecret != null">#{apiSecret},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createById != null and createById != ''">#{createById},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateById != null and updateById != ''">#{updateById},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTblMch" parameterType="TblMch">
+        update tbl_mch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="available != null">available = #{available},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="apiSecret != null">api_secret = #{apiSecret},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createById != null and createById != ''">create_by_id = #{createById},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateById != null and updateById != ''">update_by_id = #{updateById},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTblMchById" parameterType="Long">
+        delete from tbl_mch where id = #{id}
+    </delete>
+
+    <delete id="deleteTblMchByIds" parameterType="String">
+        delete from tbl_mch where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
